@@ -18,11 +18,63 @@ public class MustangTires {
 	
 	// main method
 	public static void main(String[] args) {
-   
+		// welcome message
+		int menu_num = -1;
+		System.out.print("Welcome to Mustang Tires!");
+		while(true)
+		{
+			menu_num = displayMenu();
+			switch(menu_num)
+			{
+				case 1:	// Purchase tires
+					break;
+				case 2:	// Delivery Option
+					break;	
+				case 3:	// Schedule Option
+					break;	
+				case 4:	// View Invoice
+					break;
+				case 9:	// Exit Store
+					System.out.println("You have successfully paid your invoice. Good-bye!");					
+					break;
+			}
+
+			if( menu_num == 9 )
+				break;
+		}
     }
 	
-	public static int displayMenu()	{
-		return 0;
+	public static int displayMenu()	{	
+		int num = 0;
+		
+		while(true)
+		{
+			System.out.println();
+			System.out.println("Choose from the following options:");
+			System.out.println("1) Purchase tires");		
+			System.out.println("2) Select a tire delivery option");
+			System.out.println("3) Schedule a tire installation option");
+			System.out.println("4) View invoice");
+			System.out.println("9) Pay and Exit Store");
+			
+			System.out.print("option: ");
+			
+			String input = scan.nextLine();  // Read user input
+			
+			try {
+				num = Integer.parseInt(input);
+			} catch(Exception e) {
+				System.out.println("Select an option from the following menu.");
+				continue;
+			}
+			
+			if( num == 1 || num == 2 || num == 3 || num == 4 || num == 9 )
+				break;
+
+			System.out.println("Select an option from the following menu.");
+		}
+		
+		return num;
 	}
 	
 	public static void purchaseTires() {
