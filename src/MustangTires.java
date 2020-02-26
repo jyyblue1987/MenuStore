@@ -23,6 +23,7 @@ public class MustangTires {
 	public static void main(String[] args) {
 		// welcome message
 		int menu_num = -1;
+		int deliveryOption = -1;
 		total = 0;
 		System.out.print("Welcome to Mustang Tires!");
 		while(true)
@@ -34,6 +35,9 @@ public class MustangTires {
 					purchaseTires();
 					break;
 				case 2:	// Delivery Option
+					deliveryOption = getDeliveryOption();
+					double amount = getDeliveryFee(deliveryOption);
+					updateTotal(amount);
 					break;	
 				case 3:	// Schedule Option
 					break;	
@@ -140,6 +144,7 @@ public class MustangTires {
 	public static void displayInventory() {
 		System.out.println();
 		System.out.println("Inventory Number\tDescription\tPrice Per Tire");
+		System.out.println("-----------------------------------------------------------");
 		System.out.println("1\tFord Focus Tires\t$" + focusTirePrice);
 		System.out.println("1\tChevy Malibu Tires\t$" + malibuTirePrice);
 		System.out.println("1\tToyota RAV4 Tires\t$" + rav4TirePrice);
@@ -149,33 +154,88 @@ public class MustangTires {
 	}
 	
 	public static double calculateTiresPrice(int inventoryNum, int quantity) {
-		double unit_price = 0;
+		double price = 0.0;
 
 		switch(inventoryNum)
 		{
 			case 1:
-				unit_price = focusTirePrice;
+				invoice += "Ford Focus Tires\t";
+				price = focusTirePrice;
 				break;
 			case 2:
-				unit_price = malibuTirePrice;
+				invoice += "Chevy Malibu Tires\t";
+				price = malibuTirePrice;
 				break;
 			case 3:
-				unit_price = rav4TirePrice;
+				invoice += "Toyota RAV4 Tires\t";
+				price = rav4TirePrice;
 				break;
 			case 4:
-				unit_price = fiveSeriesTirePrice;
+				invoice += "BMW 5 Series Tires\t";
+				price = fiveSeriesTirePrice;
 				break;			
 		}
 
-		return unit_price * quantity;
+		return price * quantity;
 	}
 	
 	public static int getDeliveryOption() {
-		return 0;
+		int num = 0;
+
+		while(true)
+		{
+			System.out.println();
+			System.out.println("Select from the following options:");
+			System.out.println("----------------------------------");
+			System.out.println("1) 5-7 days free shipping");		
+			System.out.println("2) 3-5 days at $" + deliveryOption2);
+			System.out.println("3) Two-day shipping at $" + deliveryOption3);
+			System.out.println("4) Next day shipping at $" + deliveryOption4);
+			
+			System.out.print("Delivery option: ");
+			
+			String input = scan.nextLine();  // Read user input
+			
+			try {
+				num = Integer.parseInt(input);
+			} catch(Exception e) {
+				System.out.println("Select an option from the following menu.");
+				continue;
+			}
+			
+			if( 1 <= num && num <= 4 )
+				break;
+			
+			System.out.println("Select an option from the following menu.");			
+		}
+		
+		return num;		
 	}
 	
 	public static double getDeliveryFee(int deliveryOption) {
-		return 0;
+		double deliveryFee = 0;
+
+		switch(deliveryOption)
+		{
+			case 1:
+				invoice += "5-7 days free shipping\t\t-\t$" + deliveryOption1 + "\n";
+				deliveryFee = deliveryOption1;
+				break;
+			case 2:
+				invoice += " 3-5 days\t\t-\t$" + deliveryOption2 + "\n";
+				deliveryFee = deliveryOption2;
+				break;
+			case 3:
+				invoice += "Two-day shipping\t\t-\t$" + deliveryOption3 + "\n";
+				deliveryFee = deliveryOption3;
+				break;
+			case 4:
+				invoice += "Next day shipping\t\t-\t$" + deliveryOption4 + "\n";
+				deliveryFee = deliveryOption4;
+				break;			
+		}
+
+		return deliveryFee;
 	}
 	
 	public static void updateTotal(double amount) {
@@ -187,7 +247,7 @@ public class MustangTires {
 	}
 	
 	public static void displayInvoice() {
-		
+		System.out.println(invoice);
 	}
 	
 	public static void scheduleTrieInstallation() {
