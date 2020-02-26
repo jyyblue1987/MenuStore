@@ -1,6 +1,4 @@
 import java.util.Scanner;
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
 public class MustangTires {
@@ -40,8 +38,10 @@ public class MustangTires {
 					updateTotal(amount);
 					break;	
 				case 3:	// Schedule Option
+					scheduleTrieInstallation();
 					break;	
 				case 4:	// View Invoice
+					displayInvoice();
 					break;
 				case 9:	// Exit Store
 					System.out.println("You have successfully paid your invoice. Good-bye!");					
@@ -73,14 +73,14 @@ public class MustangTires {
 			try {
 				num = Integer.parseInt(input);
 			} catch(Exception e) {
-				System.out.println("Select an option from the following menu.");
+				System.out.println("\nSelect an option from the following menu.");
 				continue;
 			}
 			
 			if( num == 1 || num == 2 || num == 3 || num == 4 || num == 9 )
 				break;
 
-			System.out.println("Select an option from the following menu.");
+			System.out.println("\nSelect an option from the following menu.");
 		}
 		
 		return num;
@@ -93,9 +93,11 @@ public class MustangTires {
 		{
 			displayInventory();
 
+			System.out.println();
 			System.out.print("Enter the inventory number of the tires you want to purchase: ");			
 			String num_str = scan.nextLine();  // Read user input
 
+			System.out.println();
 			System.out.print("Enter the quantity: ");			
 			String qty_str = scan.nextLine();  // Read user input
 
@@ -122,12 +124,19 @@ public class MustangTires {
 
 			if( num_msg != "" || qty_msg != "" )
 			{
+				System.out.println();
 				System.out.println("Incorrect Input");	
 				if( qty_msg != "" )
+				{
+					System.out.println();
 					System.out.println(qty_msg);
+				}
 				
 				if( num_msg != "" )
+				{
+					System.out.println();
 					System.out.println(num_msg);	
+				}
 
 				continue;	
 			}
@@ -146,9 +155,9 @@ public class MustangTires {
 		System.out.println("Inventory Number\tDescription\tPrice Per Tire");
 		System.out.println("-----------------------------------------------------------");
 		System.out.println("1\tFord Focus Tires\t$" + focusTirePrice);
-		System.out.println("1\tChevy Malibu Tires\t$" + malibuTirePrice);
-		System.out.println("1\tToyota RAV4 Tires\t$" + rav4TirePrice);
-		System.out.println("1\tBMW 5 Series Tires\t$" + fiveSeriesTirePrice);
+		System.out.println("2\tChevy Malibu Tires\t$" + malibuTirePrice);
+		System.out.println("3\tToyota RAV4 Tires\t$" + rav4TirePrice);
+		System.out.println("4\tBMW 5 Series Tires\t$" + fiveSeriesTirePrice);
 
 	
 	}
@@ -192,6 +201,7 @@ public class MustangTires {
 			System.out.println("3) Two-day shipping at $" + deliveryOption3);
 			System.out.println("4) Next day shipping at $" + deliveryOption4);
 			
+			System.out.println();
 			System.out.print("Delivery option: ");
 			
 			String input = scan.nextLine();  // Read user input
@@ -243,15 +253,73 @@ public class MustangTires {
 
 		NumberFormat myFormat = NumberFormat.getInstance();
 		myFormat.setGroupingUsed(true); // this will also round numbers, 3		
+		System.out.println();
 		System.out.println("Your current total is: $" + myFormat.format(total));
 	}
 	
 	public static void displayInvoice() {
+		NumberFormat myFormat = NumberFormat.getInstance();
+		myFormat.setGroupingUsed(true); // this will also round numbers, 3		
+
+		double tax = total * 0.08249;
+		double total_tax = total + tax;
+
 		System.out.println(invoice);
+		System.out.println();
+		System.out.println("=================================================");
+		System.out.println("Total: $" + myFormat.format(total));
+		System.out.println("Tax: $" + myFormat.format(tax));
+		System.out.println("Total plus tax: $" + myFormat.format(total_tax));		
 	}
 	
 	public static void scheduleTrieInstallation() {
+		int num = 0;
 		
+		while(true)
+		{
+			System.out.println();
+			System.out.println("Would you like a morning or afternoon appointment?");
+			System.out.println("(1 = Morning, 2 = Afternoon, 3 = exit)");		
+	
+			System.out.print("Installation option: ");
+			
+			String input = scan.nextLine();  // Read user input
+			
+			try {
+				num = Integer.parseInt(input);
+			} catch(Exception e) {
+				System.out.println("Please try again. Would you like a morning or afternoon appointment?");
+				continue;
+			}
+			
+			if( num < 0 || num > 3 )			
+			{
+				System.out.println("Please try again. Would you like a morning or afternoon appointment?");
+				continue;
+			}
+
+			if( num == 3 )			
+				break;
+
+			double install_price = 0;
+			switch(num)
+			{
+				case 1:
+					install_price = morningInstallation;
+					System.out.print("Morning installations cost $" + install_price);
+					invoice += "Morning installation\t\t-\t$" + install_price + "\n";
+					break;
+				case 2:
+					install_price = morningInstallation;
+					System.out.print("Afternoon installations cost $" + install_price);
+					invoice += "Afternoon installation\t\t-\t$" + install_price + "\n";
+					break;				
+			}
+
+			updateTotal(install_price);
+
+			break;
+		}		
 	}	
 	
 }
